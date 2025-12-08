@@ -1,4 +1,4 @@
-# 1. Implement the following circuit:
+# 1. Implement the following circuit: wire
 
 <img width="239" height="42" alt="image" src="https://github.com/user-attachments/assets/1e2f9031-d768-46b2-a789-68bffe170483" />
 
@@ -13,7 +13,7 @@ endmodule
 
 ```
 
-# 2. Implement the circuit:
+# 2. Implement the circuit: gnd
 
 <img width="195" height="110" alt="image" src="https://github.com/user-attachments/assets/58737d25-f007-46d7-a97a-65e5ed82808d" />
 
@@ -45,7 +45,7 @@ endmodule
 
 # 4. 1NOT-1AND Gate
 
-<img width="292" height="116" alt="image" src="https://github.com/user-attachments/assets/a4dbf7a9-d944-4f5d-a41f-b496355de2b9" />
+<img width="292" height="116" alt="image" src="https://github.com/user-attachments/assets/a4dbf7a9-d944-4f5d-a41f-b496355de2b9" class="white-bg"/>
 
 ```verilog
 module top_module (
@@ -258,6 +258,39 @@ module top_module(
         default : out = 0;
     	endcase
     end
+
+endmodule
+```
+
+# 16. Gatesv
+
+```verilog
+module top_module( 
+    input [3:0] in,
+    output [2:0] out_both,
+    output [3:1] out_any,
+    output [3:0] out_different );
+    
+    assign out_both = in[2:0] & in[3:1];
+    assign out_any = in[3:1] | in[2:0];
+    assign out_different = in[3:0] ^ {in[0],in[3:1]};
+
+endmodule
+
+```
+
+# 17. Even longer vector - gatesv100
+
+```verilog
+module top_module( 
+    input [99:0] in,
+    output [98:0] out_both,
+    output [99:1] out_any,
+    output [99:0] out_different );
+    
+    assign out_both = in[98:0] & in[99:1];
+    assign out_any = in[99:1] | in[98:0];
+    assign out_different = in[99:0] ^ {in[0],in[99:1]};
 
 endmodule
 ```
