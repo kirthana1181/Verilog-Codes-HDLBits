@@ -217,3 +217,47 @@ module top_module (
 endmodule
 
 ```
+
+
+# 14. Thermostat
+
+```verilog
+module top_module (
+    input too_cold,
+    input too_hot,
+    input mode,
+    input fan_on,
+    output heater,
+    output aircon,
+    output fan
+); 
+    assign heater = (mode == 1'b1) & (too_cold == 1'b1);
+    assign aircon = (mode == 1'b0) & (too_hot == 1'b1);
+    assign fan = (fan_on == 1'b1) | (heater == 1'b1) | (aircon == 1'b1);
+
+endmodule
+```
+
+# 15. Popcount3
+
+```verilog
+module top_module( 
+    input [2:0] in,
+    output [1:0] out );
+    
+    always @(*) begin
+        case(in)
+            3'b000: out = 0;
+            3'b001: out = 1;
+            3'b010: out = 1;
+            3'b011: out = 2;
+            3'b100: out = 1;
+            3'b101: out = 2;
+            3'b110: out = 2;
+            3'b111: out = 3;
+        default : out = 0;
+    	endcase
+    end
+
+endmodule
+```
