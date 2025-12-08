@@ -17,11 +17,11 @@ module top_module(
     
     wire [99:0]w1;
     genvar i;
-    bcd_fadd inst1 (.a(a[3:0]), .b(b[3:0]), .cin(0), .cout(w1[0]), .sum(sum[3:0]));
+    bcd_fadd inst1 (.a(a[3:0]), .b(b[3:0]), .cin(cin), .cout(w1[0]), .sum(sum[3:0]));
                   
     generate
         for(i = 1; i<100; i = i+1) begin : bcdadder
-            bcd_fadd inst2(.a(a[3+i*4:i*4]), .b(b[3+i*4:i*4]), .cin(w1[i-1]), .cout(w1[i]), .sum(sum[3+i*4:i*4]));
+            bcd_fadd inst2(.a(a[(i*4+3):(i*4)]), .b(b[(i*4+3):(i*4)]), .cin(w1[i-1]), .cout(w1[i]), .sum(sum[(i*4+3):(i*4)]));
         end
     endgenerate
     assign cout = w1[99];
