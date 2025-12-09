@@ -151,5 +151,25 @@ endmodule
 
 # 8. 4-bit BCD Adder
 
+```verilog
+module top_module ( 
+    input [15:0] a, b,
+    input cin,
+    output cout,
+    output [15:0] sum );
+    
+    genvar i;
+    wire [3:0]w1;
+    bcd_fadd inst0 ( .a(a[3:0]), .b(b[3:0]), .cin(cin), .cout(w1[0]), .sum(sum[3:0]));
+    
+    generate 
+        for( i = 1; i < 4; i = i + 1) begin: bcd_add
+            bcd_fadd inst ( .a(a[3+4*i:4*i]), .b(b[3+4*i:4*i]), .cin(w1[i-1]), .cout(w1[i]), .sum(sum[3+4*i:4*i]));
+        end
+    endgenerate
+    assign cout = w1[3];
+
+endmodule
+```
 
 
