@@ -132,4 +132,140 @@ module top_module (
 endmodule
 ```
 
-# 7. 
+# 7. d-latch
+
+
+<img width="263" height="226" alt="image" src="https://github.com/user-attachments/assets/27ce4657-d4b8-4283-be6e-c5557567c6ff" />
+
+
+```verilog
+module top_module (
+    input d, 
+    input ena,
+    output q);
+    
+    always @(*) begin
+        if(ena)
+            q <= d;
+        else
+            q <= q;
+    end
+
+endmodule
+```
+
+# 9. dff-ar
+
+
+<img width="191" height="148" alt="image" src="https://github.com/user-attachments/assets/06ea6288-efa0-443c-b044-71aa44e26eee" />
+
+```verilog
+module top_module (
+    input clk,
+    input d, 
+    input ar,   // asynchronous reset
+    output q);
+    
+    always @(posedge clk or posedge ar) begin
+        if(ar)
+            q <= 0;
+        else
+            q <= d;
+
+    end
+
+endmodule
+
+```
+
+# 10. Synchronous Reset
+
+<img width="267" height="189" alt="download" src="https://github.com/user-attachments/assets/c5740cda-d731-4adf-98bd-87a391c18aff" />
+
+```verilog
+
+module top_module (
+    input clk,
+    input d, 
+    input r,   // synchronous reset
+    output q);
+    
+    always @(posedge clk) begin
+        if(r)
+            q <= 0;
+        else
+            q <= d;
+    end
+
+endmodule
+```
+
+# 11. Exams/m2014 q4d
+
+<img width="529" height="193" alt="c59c1a1e81f0ec1e2ec10884d8dd0dc1" src="https://github.com/user-attachments/assets/e0a66258-9cd7-46a5-b226-b7d6f4a1d1fa" />
+
+
+```verilog
+module top_module (
+    input clk,
+    input in, 
+    output out);
+    
+    always @(posedge clk) begin
+        out <= out ^ in;
+    end
+
+endmodule
+```
+
+# 12. Mt2015 muxdff
+
+<img width="647" height="264" alt="d512aadec96141e7d4cc21e008b6acbd" src="https://github.com/user-attachments/assets/694eca92-89a6-4d12-aedf-a400060d2eca" />
+
+```verilog
+module top_module (
+	input clk,
+	input L,
+	input r_in,
+	input q_in,
+	output reg Q);
+    
+    always @(posedge clk) begin
+        case(L)
+            1'b0: Q <= q_in;
+            1'b1: Q <= r_in;
+        endcase
+    end
+
+endmodule
+```
+
+# 13. Exams/2014 q4a
+
+![v2-32e3b953deb8f5f3fe3f029b14c2e6a5_b](https://github.com/user-attachments/assets/be97ce8f-2c2f-4745-ae0e-9f6603a9f70a)
+
+```verilog
+module top_module (
+    input clk,
+    input w, R, E, L,
+    output Q
+);
+    always @(posedge clk) begin
+        case({L,E})
+            2'b00: Q <= Q;
+            2'b01: Q <= w;
+            2'b10: Q <= R;
+            2'b11: Q <= R;
+            default: Q <= 0;
+        endcase
+    end
+
+endmodule
+```
+
+# 14. Exams/ece241 2014 q4
+
+![download](https://github.com/user-attachments/assets/fb3bd6b9-4339-4d67-b506-03147d344e7f)
+
+```verilog
+```
