@@ -404,3 +404,10 @@ endmodule
 ```verilog
 
 ```
+
+# 19. Dual-edge triggerred FF
+
+<img width="240" height="74" alt="image" src="https://github.com/user-attachments/assets/b2891d1a-315b-415d-8f13-92f20a4b44a0" />
+
+```verilog
+```
