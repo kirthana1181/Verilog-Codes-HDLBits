@@ -407,7 +407,22 @@ endmodule
 
 # 19. Dual-edge triggerred FF
 
-<img width="240" height="74" alt="image" src="https://github.com/user-attachments/assets/b2891d1a-315b-415d-8f13-92f20a4b44a0" />
+<img width="240" height="74" alt="image" src="https://github.com/user-attachments/assets/852d3c48-0220-450e-86d3-924092a31928" />
+
 
 ```verilog
+module top_module (
+    input clk,
+    input d,
+    output q
+);
+    wire r;
+    reg p;
+    assign r = ~clk;
+    always @(*) begin
+        q = p;
+        p = ((clk == 1)|(r == 1)) ? d : q;
+    end
+    
+endmodule
 ```
