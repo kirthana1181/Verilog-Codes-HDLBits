@@ -322,4 +322,78 @@ module top_module (
 endmodule
 ```
 
-# 15. 
+# 15. Exams/ece241 2013 q7
+
+<img width="1489" height="283" alt="image" src="https://github.com/user-attachments/assets/b266fa48-cd62-4f82-8966-98427ba95898" />
+
+```verilog
+module top_module (
+    input clk,
+    input j,
+    input k,
+    output Q); 
+    
+    wire d;
+    assign d = Q | (j & ~k);
+    dff inst0 (clk,d,Q);
+    always @(posedge clk) begin
+        case({j,k})
+            2'b00: Q <= Q;
+            2'b01: Q <= j;
+            2'b10: Q <= j;
+            2'b11: Q <= ~Q;
+            default : Q <= 0;
+        endcase
+    end
+
+endmodule
+
+module dff (
+    input clk,
+    input d,
+    output q 
+);
+    always @(posedge clk) begin
+        q <= d;
+    end
+    
+endmodule
+```
+
+# 16. Edgedetect
+
+<img width="943" height="260" alt="image" src="https://github.com/user-attachments/assets/0be343dd-3c39-4519-a3e3-38884a2700af" />
+
+```verilog
+module top_module (
+    input clk,
+    input [7:0] in,
+    output [7:0] pedge
+);
+    reg [7:0]temp = 0;
+    always @(posedge clk) begin
+        temp <= in;
+        pedge <= in & ~temp; 
+    end
+
+endmodule
+```
+
+# 17. Edgedetect2
+
+<img width="944" height="237" alt="image" src="https://github.com/user-attachments/assets/d6fc58ab-8423-420b-ab7f-e673dbff06b5" />
+
+```verilog
+module top_module (
+    input clk,
+    input [7:0] in,
+    output [7:0] anyedge
+);
+    reg [7:0] temp = 0;
+    always @(posedge clk) begin
+        temp <= in;
+        anyedge <= in ^ temp;
+    end
+
+endmodule
+```
