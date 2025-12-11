@@ -397,3 +397,10 @@ module top_module (
 
 endmodule
 ```
+# 18. Edgecapture
+
+<img width="520" height="193" alt="image" src="https://github.com/user-attachments/assets/1c91fdea-0f69-4587-a892-5343480a3249" />
+
+```verilog
+
+```
