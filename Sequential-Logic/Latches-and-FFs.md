@@ -268,4 +268,58 @@ endmodule
 ![download](https://github.com/user-attachments/assets/fb3bd6b9-4339-4d67-b506-03147d344e7f)
 
 ```verilog
+module top_module (
+    input clk,
+    input x,
+    output z
+); 
+    wire d0,d1,d2;
+    reg [2:0] q = 3'd0;
+    assign d0 = x ^ q[0];
+    assign d1 = x & ~q[1];
+    assign d2 = x | ~q[2];
+    
+    dff inst1 (clk, d0, q[0]);
+    dff inst2 (clk, d1, q[1]);
+    dff inst3 (clk, d2, q[2]);
+    
+    assign z = ~(q[0] | q[1] | q[2]);
+
+endmodule
+
+module dff(
+    input clk,d,
+    output reg Q
+);   
+    always @(posedge clk) begin
+        Q <= d;
+    end
+    
+endmodule
 ```
+or 
+
+```verilog
+module top_module (
+    input clk,
+    input x,
+    output z
+); 
+    wire d0,d1,d2;
+    reg [2:0] q = 3'd0;
+    assign d0 = x ^ q[0];
+    assign d1 = x & ~q[1];
+    assign d2 = x | ~q[2];
+    
+    always @(posedge clk) begin
+        q[0] <= d0;
+        q[1] <= d1;
+        q[2] <= d2;
+    end
+
+    assign z = ~(q[0] | q[1] | q[2]);
+
+endmodule
+```
+
+# 15. 
