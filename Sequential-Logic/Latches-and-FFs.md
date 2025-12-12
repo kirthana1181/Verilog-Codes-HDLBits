@@ -416,12 +416,22 @@ module top_module (
     input d,
     output q
 );
-    wire r;
-    reg p;
-    assign r = ~clk;
+    //wire r;
+    reg s,t;
+    //assign r = ~clk;
+    always @(posedge clk) begin
+        s <= d;
+    end
+    
+    always @(negedge clk) begin
+        t <= d;
+    end
+    
     always @(*) begin
-        q = p;
-        p = ((clk == 1)|(r == 1)) ? d : q;
+        case(clk)
+            1'b0: q <= t;
+            1'b1: q <= s;
+        endcase
     end
     
 endmodule
