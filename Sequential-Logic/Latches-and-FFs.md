@@ -416,9 +416,7 @@ module top_module (
     input d,
     output q
 );
-    //wire r;
     reg s,t;
-    //assign r = ~clk;
     always @(posedge clk) begin
         s <= d;
     end
