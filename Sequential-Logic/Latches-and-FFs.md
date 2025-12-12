@@ -362,6 +362,8 @@ endmodule
 
 # 16. Edgedetect
 
+To detech positive edge
+
 <img width="943" height="260" alt="image" src="https://github.com/user-attachments/assets/0be343dd-3c39-4519-a3e3-38884a2700af" />
 
 ```verilog
@@ -380,6 +382,8 @@ endmodule
 ```
 
 # 17. Edgedetect2
+
+To detect both edges
 
 <img width="944" height="237" alt="image" src="https://github.com/user-attachments/assets/d6fc58ab-8423-420b-ab7f-e673dbff06b5" />
 
