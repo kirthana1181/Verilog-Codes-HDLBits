@@ -406,6 +406,26 @@ endmodule
 <img width="520" height="193" alt="image" src="https://github.com/user-attachments/assets/1c91fdea-0f69-4587-a892-5343480a3249" />
 
 ```verilog
+module top_module (
+    input clk,
+    input reset,
+    input [31:0] in,
+    output [31:0] out
+);
+    reg [31:0]temp;
+    always @(posedge clk or posedge reset) begin
+        temp <= in; 
+        if(reset)
+            out <= 0;
+        else begin 
+            if(~in & temp > 0)
+                out <= ~in & temp;
+        	else
+                out <= temp | in;
+        end
+    end
+
+endmodule
 
 ```
 
