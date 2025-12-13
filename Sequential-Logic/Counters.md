@@ -59,4 +59,30 @@ module top_module (
 endmodule
 ```
 
-# 4. 
+# 4. countslow
+
+```verilog
+module top_module (
+    input clk,
+    input slowena,
+    input reset,
+    output [3:0] q);
+    
+    always @(posedge clk) begin
+        if(q == 9) begin
+            case(slowena)
+                1'b0: q = ~(q[3] & q[1]);
+                1'b1: q = q;
+                default : q = 0;
+            endcase
+        end
+        else;
+        if(reset)
+            q <= 0;
+        else
+            q <= q + (1 & slowena);
+    end
+
+endmodule
+
+```
