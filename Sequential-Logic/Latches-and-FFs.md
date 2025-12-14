@@ -412,21 +412,19 @@ module top_module (
     input [31:0] in,
     output [31:0] out
 );
-    reg [31:0]temp;
-    always @(posedge clk or posedge reset) begin
-        temp <= in; 
+    reg [31:0] temp_in = 0;
+    reg [31:0] temp_out = 0;
+    always @(posedge clk) begin
+        temp_in <= in;
+        temp_out = ~in & temp_in;
         if(reset)
             out <= 0;
-        else begin 
-            if(~in & temp > 0)
-                out <= ~in & temp;
-        	else
-                out <= temp | in;
-        end
+        else begin
+            out <= out | temp_out;
+        end	
     end
 
 endmodule
-
 ```
 
 # 19. Dual-edge triggerred FF
