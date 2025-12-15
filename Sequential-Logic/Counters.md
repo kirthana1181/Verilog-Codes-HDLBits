@@ -111,3 +111,26 @@ module top_module (
 endmodule
 
 ```
+
+# 6. Count1-12
+
+```verilog
+module top_module (
+    input clk,
+    input reset,
+    input enable,
+    output [3:0] Q,
+    output c_enable,
+    output c_load,
+    output [3:0] c_d
+); //
+    wire [3:0]w1;
+    
+    assign c_enable = ((Q == 4'd12) == 1) ? 1 : (enable ? 1 : 0);
+    assign c_load = (Q == 4'd12) ? 1 : ((reset == 1) ? 1 : 0);
+    assign c_d = (c_load == 1) ? 4'd1 : 4'd0;
+    assign w1 = (reset == 1) ? 0 : ((Q == 4'd12) ? Q[3] & Q[2] : Q);
+    count4 the_counter (clk, c_enable, c_load, 4'd1, w1);
+
+endmodule
+```
