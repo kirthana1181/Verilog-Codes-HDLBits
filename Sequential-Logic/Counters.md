@@ -126,11 +126,10 @@ module top_module (
 ); //
     wire [3:0]w1;
     
-    assign c_enable = ((Q == 4'd12) == 1) ? 1 : (enable ? 1 : 0);
-    assign c_load = (Q == 4'd12) ? 1 : ((reset == 1) ? 1 : 0);
-    assign c_d = (c_load == 1) ? 4'd1 : 4'd0;
-    assign w1 = (reset == 1) ? 0 : ((Q == 4'd12) ? Q[3] & Q[2] : Q);
-    count4 the_counter (clk, c_enable, c_load, 4'd1, w1);
+    assign c_enable = (enable == 1) ? 1 : ((reset == 1) | (Q == 4'd12) ? 4'd0 : enable);
+    assign c_load = (reset == 1) | (Q == 4'd12) & (enable == 1) ? 1 : 0 ;
+    assign c_d = (reset == 1) | (Q == 4'd12) & (enable == 1) ? 1 : 1'd0;
+    count4 the_counter (clk, c_enable, c_load, 1, Q);
 
 endmodule
 ```
