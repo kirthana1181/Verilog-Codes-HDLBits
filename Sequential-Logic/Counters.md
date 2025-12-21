@@ -133,3 +133,30 @@ module top_module (
 
 endmodule
 ```
+
+# 7.Counter 1000
+
+```verilog
+module top_module (
+    input clk,
+    input reset,
+    output OneHertz,
+    output [2:0] c_enable
+); //
+    wire [3:0]w1,w2,w3;
+    assign OneHertz = (w1 == 9) & (w2 == 9) & (w3 == 9);
+    always @(*) begin
+        case({(w2 == 4'd9),(w1 == 4'd9),1'b1})
+            3'b001: c_enable = 1;
+            3'b011: c_enable = 3;
+            3'b111: c_enable = 7;
+            default: c_enable = 1;
+        endcase
+    end
+    bcdcount counter0 (clk, reset, c_enable[0],w1);
+    bcdcount counter1 (clk, reset, c_enable[1],w2);
+    bcdcount counter2 (clk, reset, c_enable[2],w3);
+
+endmodule
+
+```
