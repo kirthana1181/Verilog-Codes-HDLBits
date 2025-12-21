@@ -160,3 +160,38 @@ module top_module (
 endmodule
 
 ```
+# 8. 4-digit decimal counter
+
+```verilog
+module top_module (
+    input clk,
+    input reset,   // Synchronous active-high reset
+    output [3:1] ena,
+    output [15:0] q);
+    
+    assign q = 0;
+    wire [3:0] w1,w2,w3,w4;
+    always @(posedge clk) begin
+        if (reset)
+            q <= 0;
+        else begin
+            /*w1 <= w1 + 1;
+            ena[1] <= (w1 == 4'd9) ? 1 : 0 ; 
+            w2 <= ena[1] ? w2 + 1 : w2;
+            ena[2] <= (w2 == 4'd9) ? 1 : 0;
+            w3 <= ena[2] ? w3 + 1 : 3;
+            ena[3] <= (w3 == 4'd9) ? 1 : 0;
+            w4 <= ena[3] ? w4 + 1 : w4;*/
+            case(ena)
+                3'b000: ;
+                3'b001: ;
+                3'b011: ;
+                3'b111: ;
+                default: q = 0;
+            endcase
+    	end
+    end
+
+endmodule
+
+```
