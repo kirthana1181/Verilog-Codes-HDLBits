@@ -31,17 +31,6 @@ This repository documents the problems I have solved on [HDLBits](https://hdlbit
 - Shift registers
 - Finite State Machines
 
-## How to Use
-
-1. Clone the repository:
-```bash
-git clone https://github.com/kirthana1181/Verilog-Codes-HDLBits.git
-```
-
-2. Navigate to any folder and open the Verilog files
-
-3. Simulate using your preferred Verilog simulator
-
 ## About HDLBits
 
 HDLBits is an interactive learning platform for Verilog HDL. Visit [hdlbits.01xz.net](https://hdlbits.01xz.net/) to practice.
