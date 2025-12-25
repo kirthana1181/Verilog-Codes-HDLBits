@@ -168,35 +168,36 @@ module top_module (
     input reset,   // Synchronous active-high reset
     output [3:1] ena,
     output [15:0] q);
+
+    mod10 inst0 (.clk(clk),.reset(reset),.ena(1'b1),.q(q[3:0]) );
+    assign ena[1] = q[3:0] == 4'd9 ? 1 : 0;
+    mod10 inst1 (.clk(clk),.reset(reset),.ena(ena[1]),.q(q[7:4]) );
+    assign ena[2] = q[7:4] == 4'd9 ? 1 : 0;
+    mod10 inst2 (.clk(clk),.reset(reset),.ena(ena[2]),.q(q[11:8]));
+    assign ena[3] = q[11:8] == 4'd9 ? 1 : 0;
+    mod10 inst3 (.clk(clk),.reset(reset),.ena(ena[3]),.q(q[15:12]));
     
-    assign q = 0;
-    wire [3:0] w1,w2,w3,w4;
+endmodule
+
+module mod10 (
+    input clk,
+    input reset,      // Synchronous active-high reset
+    input ena,
+    output [3:0] q);
+    
     always @(posedge clk) begin
-        if (reset)
+        if(q == 9)
+            q = ~(q[3] & q[1]);
+        else
+            q = q;
+        if(reset)
             q <= 0;
         else begin
-            /*w1 <= w1 + 1;
-            ena[1] <= (w1 == 4'd9) ? 1 : 0 ; 
-            w2 <= ena[1] ? w2 + 1 : w2;
-            ena[2] <= (w2 == 4'd9) ? 1 : 0;
-            w3 <= ena[2] ? w3 + 1 : 3;
-            ena[3] <= (w3 == 4'd9) ? 1 : 0;
-            w4 <= ena[3] ? w4 + 1 : w4;*/
-            case({(w3 == 4'd9),(w2 == 4'd9),(w1 == 4'd9)})
-                3'b000: ena <= 3'b000;
-                3'b001: ena <= 3'b001;
-                3'b011: ena <= 3'b011;
-                3'b111: ena <= 3'b111;
-                default: ena <= 0;
-            endcase
-            case(ena)
-                3'b000: q = {q[15:12],q[11:8],q[7:4],q[3:0]+1};
-                3'b001: q = {q[15:12],q[11:8],q[7:4]+1,q[3:0]+1};
-                3'b011: q = {q[15:12],q[11:8]+1,q[7:4]+1,q[3:0]+1};
-                3'b111: q = {q[15:12]+1,q[11:8]+1,q[7:4]+1,q[3:0]+1};
-                default: q = 0;
-            endcase
-    	end
+            if(ena)
+	            q <= q+1;
+            else
+                q <= q;
+        end
     end
 
 endmodule
