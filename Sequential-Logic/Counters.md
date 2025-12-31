@@ -170,13 +170,13 @@ module top_module (
     output [15:0] q);
 
     mod10 inst0 (.clk(clk),.reset(reset),.ena(1'b1),.q(q[3:0]) );
-    assign ena[1] = q[3:0] == 4'd9 ? 1 : 0;
+    assign ena[1] = (q[3:0] == 4'b1001) ? 1 : 0;
     mod10 inst1 (.clk(clk),.reset(reset),.ena(ena[1]),.q(q[7:4]) );
-    assign ena[2] = q[7:4] == 4'd9 ? 1 : 0;
+    assign ena[2] = ((q[7:4] == 4'b1001) & (q[3:0] == 4'b1001)) ? 1 : 0;
     mod10 inst2 (.clk(clk),.reset(reset),.ena(ena[2]),.q(q[11:8]));
-    assign ena[3] = q[11:8] == 4'd9 ? 1 : 0;
+    assign ena[3] = ((q[11:8] == 4'b1001) & (q[7:4] == 4'b1001) & (q[3:0] == 4'b1001)) ? 1 : 0;
     mod10 inst3 (.clk(clk),.reset(reset),.ena(ena[3]),.q(q[15:12]));
-    
+        
 endmodule
 
 module mod10 (
@@ -186,17 +186,13 @@ module mod10 (
     output [3:0] q);
     
     always @(posedge clk) begin
-        if(q == 9)
-            q = ~(q[3] & q[1]);
-        else
-            q = q;
         if(reset)
             q <= 0;
-        else begin
-            if(ena)
-	            q <= q+1;
+        else if(ena) begin
+            if(q == 9)
+                q <= 0;
             else
-                q <= q;
+                q <= q + 1;
         end
     end
 
