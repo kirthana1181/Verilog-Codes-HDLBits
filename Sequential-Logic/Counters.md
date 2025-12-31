@@ -203,6 +203,58 @@ endmodule
 
 <img width="717" height="330" alt="image" src="https://github.com/user-attachments/assets/4cbd2341-ea67-4ce6-b98b-455e80161547" />
 
+
 ```verilog
+module top_module(
+    input clk,
+    input reset,
+    input ena,
+    output pm,
+    output [7:0] hh,
+    output [7:0] mm,
+    output [7:0] ss); 
+    
+    wire enable[1:0];
+    mod59 inst0 (.clk(clk),.reset(reset),.ena(1'b1),.q(ss) );
+    
+    assign enable[0] = (ss == 8'd59) ? 1 : 0;
+    mod59 inst1 (.clk(clk),.reset(reset),.ena(enable[0]),.q(mm));
+    
+    assign enable[1]= ((ss == 8'd59) & (mm == 8'd59)) ? 1 : 0;
+    assign pm = ((ss == 8'd00) & (mm == 8'd00) & (hh == 8'd12) & (reset == 0)) ? 1 : 0;
+    
+    always @(posedge clk) begin
+        if(reset) begin
+            hh <= 12;
+        end
+        else if(ena & enable[1]) begin
+            if((hh == 8'd11) & (pm == 1))
+                hh <= 8'd12;
+            else if ((hh == 8'd12) & (pm == 0))
+                hh <= 8'h01;
+            else
+                hh <= hh + 1;
+        end
+    end
+endmodule
+
+
+module mod59 (
+    input clk,
+    input reset,      // Synchronous active-high reset
+    input ena,
+    output [7:0] q);
+    
+    always @(posedge clk) begin
+        if(reset)
+            q <= 0;
+        else if(ena) begin
+            if(q == 8'd59)
+                q <= 0;
+            else
+                q <= q + 1;
+        end
+    end
+endmodule
 
 ```
