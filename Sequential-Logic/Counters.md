@@ -198,3 +198,11 @@ module mod10 (
 
 endmodule
 ```
+
+# 9. 12 Hour Clock
+
+<img width="717" height="330" alt="image" src="https://github.com/user-attachments/assets/4cbd2341-ea67-4ce6-b98b-455e80161547" />
+
+```verilog
+
+```
