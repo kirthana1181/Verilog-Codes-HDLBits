@@ -223,7 +223,7 @@ module top_module(
     assign enable[1]= ((ss == 8'h59) & (mm == 8'h59)) ? 1 : 0;
     
     always @(posedge clk) begin
-        if ((ss == 8'h00) & (mm == 8'h00) & (hh == 8'h12)) 
+        if ((ss == 8'h00) & (mm == 8'h00) & (hh == 8'h12) & (pm == 1)) 
             	pm <= ~pm;
     end
     
@@ -234,10 +234,16 @@ module top_module(
             if ({hh[7:4],hh[3:0] + 1} > 8'h12)
                 hh <= 8'h01;
             else begin
-                if (hh == 4'h9)
-                    hh <= 0;
+                if (hh[3:0] == 4'h09) begin
+                    /*hh[3:0] <= 0;
+                    if (hh[7:4] == 4'h02) 
+                        hh[7:4] <= 0;
+                    else
+                        hh[7:4] <= hh[7:4] + 1;*/
+                    {hh[7:4],hh[3:0]} <= {hh[7:4]+1,4'b0};
+                end
                 else
-                    hh <= hh + 1;
+                    hh[3:0] <= hh[3:0] + 1;
             end   
         end
         
