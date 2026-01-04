@@ -215,22 +215,16 @@ module top_module(
     output [7:0] ss); 
     
     wire enable[1:0];
-    mod59 inst_ss2 (.clk(clk),.reset(reset),.ena(ena),.q(ss[7:4]),.condn({2'b10,1'b1})); 
-    mod59 inst_ss1 (.clk(clk),.reset(reset),.ena(ena),.q(ss[3:0]),.condn({2'b01,1'b1}));
+    mod59 inst_ss1 (.clk(clk),.reset(reset),.ena(ena),.q1(ss[7:4]),.q0(ss[3:0]),.condn(1'b1)); 
     
     assign enable[0] = (ss == 8'h59) ? 1 : 0;
-    mod59 inst_mm2 (.clk(clk),.reset(reset),.ena(ena),.q(mm[7:4]),.condn({2'b10,enable[0]}));
-    mod59 inst_mm1 (.clk(clk),.reset(reset),.ena(ena),.q(mm[3:0]),.condn({2'b01,enable[0]}));
+    mod59 inst_mm1 (.clk(clk),.reset(reset),.ena(ena),.q1(mm[7:4]),.q0(mm[3:0]),.condn(enable[0])); 
     
     assign enable[1]= ((ss == 8'h59) & (mm == 8'h59)) ? 1 : 0;
     
     always @(posedge clk) begin
-        if (reset)
-            pm <= 0;
-        else if (ena) begin
-            if ((ss == 8'h00) & (mm == 8'h00) & (hh == 8'h12)) 
+        if ((ss == 8'h00) & (mm == 8'h00) & (hh == 8'h12)) 
             	pm <= ~pm;
-        end
     end
     
     always @(posedge clk) begin
@@ -254,25 +248,28 @@ module mod59 (
     input clk,
     input reset,      // Synchronous active-high reset
     input ena,
-    input [2:0]condn,
-    output [7:0] q);
+    input condn,
+    output [3:0] q0,
+    output [3:0] q1);
     
     always @(posedge clk) begin
-        if (reset)
-            q <= 0;
-        else if (ena & condn[0]) begin
-            if (condn[2:1] == 2'b10) begin
-                if ((q[7:4] == 5) & (q[3:0] == 9))
-                    q <= 0;
+        if (reset) begin
+            q1 <= 0;
+            q0 <= 0;
+        end
+        else if (ena) begin
+            if ((condn) & (q0 == 4'h9)) begin
+                if (q1 == 5)
+                    q1 <= 0;
                 else
-                    q <= q + 1;
+                    q1 <= q1 + 1;
             end
             
-            else if (condn[2:1] == 2'b01)begin
-                if (q[3:0] == 9)
-                    q <= 0;
+            if (condn) begin
+                if (q0 == 9)
+                    q0 <= 0;
                 else
-                    q <= q + 1;
+                    q0 <= q0 + 1;
             end
         end
     end
