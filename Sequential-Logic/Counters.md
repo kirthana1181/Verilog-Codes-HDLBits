@@ -217,34 +217,29 @@ module top_module(
     wire enable[1:0];
     mod59 inst_ss1 (.clk(clk),.reset(reset),.ena(ena),.q1(ss[7:4]),.q0(ss[3:0]),.condn(1'b1)); 
     
-    assign enable[0] = (ss == 8'h59) ? 1 : 0;
+    assign enable[0] = (ss == 8'h59) ? 1'b1 : 1'b0;
     mod59 inst_mm1 (.clk(clk),.reset(reset),.ena(ena),.q1(mm[7:4]),.q0(mm[3:0]),.condn(enable[0])); 
     
-    assign enable[1]= ((ss == 8'h59) & (mm == 8'h59)) ? 1 : 0;
+    assign enable[1]= ((ss == 8'h59) & (mm == 8'h59)) ? 1'b1 : 1'b0;
     
     always @(posedge clk) begin
-        if ((ss == 8'h00) & (mm == 8'h00) & (hh == 8'h12) & (pm == 1)) 
-            	pm <= ~pm;
+        //pm <= 0;
+        if (reset == 1'b1)
+            pm <= 1'b0;
+        else
+            assign pm <= ((ss == 8'h00) & (mm == 8'h00) & (hh == 8'h12)) ? ~pm : pm;
     end
     
     always @(posedge clk) begin
         if (reset)
             hh <= 8'h12;
         else if (ena & enable[1]) begin
-            if ({hh[7:4],hh[3:0] + 1} > 8'h12)
+            if ((hh[7:4] == 4'h01) & (hh[3:0] == 4'h02))
                 hh <= 8'h01;
-            else begin
-                if (hh[3:0] == 4'h09) begin
-                    /*hh[3:0] <= 0;
-                    if (hh[7:4] == 4'h02) 
-                        hh[7:4] <= 0;
-                    else
-                        hh[7:4] <= hh[7:4] + 1;*/
-                    {hh[7:4],hh[3:0]} <= {hh[7:4]+1,4'b0};
-                end
-                else
-                    hh[3:0] <= hh[3:0] + 1;
-            end   
+            else if (hh[3:0] == 4'h09)
+            {hh[7:4],hh[3:0]} <= { hh[7:4] + 1 ,4'h00};
+            else
+                hh[3:0] <= hh[3:0] + 1;  
         end
         
     end
