@@ -203,6 +203,7 @@ endmodule
 
 <img width="717" height="330" alt="image" src="https://github.com/user-attachments/assets/4cbd2341-ea67-4ce6-b98b-455e80161547" />
 
+ This program was a bit tricky, as it helps in understanding significantly the use and affect of blocking and nonblocking statements. I faced this issue and could resolve it after it got me thinking for an hour over the assignment of "pm" signal.
 
 ```verilog
 module top_module(
@@ -221,13 +222,12 @@ module top_module(
     mod59 inst_mm1 (.clk(clk),.reset(reset),.ena(ena),.q1(mm[7:4]),.q0(mm[3:0]),.condn(enable[0])); 
     
     assign enable[1]= ((ss == 8'h59) & (mm == 8'h59)) ? 1'b1 : 1'b0;
-    
+    //assign pm = reset ? 0 : ( ((ss == 8'h00) & (mm == 8'h00) & (hh == 8'h12)) ? ~pm : pm);
     always @(posedge clk) begin
-        //pm <= 0;
         if (reset == 1'b1)
             pm <= 1'b0;
-        else
-            assign pm <= ((ss == 8'h00) & (mm == 8'h00) & (hh == 8'h12)) ? ~pm : pm;
+        else if (enable[1] & enable[0] & hh == 8'h11)
+            pm <= ~pm;
     end
     
     always @(posedge clk) begin
@@ -241,7 +241,6 @@ module top_module(
             else
                 hh[3:0] <= hh[3:0] + 1;  
         end
-        
     end
 endmodule
 
@@ -258,20 +257,17 @@ module mod59 (
             q1 <= 0;
             q0 <= 0;
         end
-        else if (ena) begin
-            if ((condn) & (q0 == 4'h9)) begin
+        else if (ena & condn) begin
+            if (q0 == 4'h9) begin
                 if (q1 == 5)
                     q1 <= 0;
                 else
                     q1 <= q1 + 1;
             end
-            
-            if (condn) begin
-                if (q0 == 9)
-                    q0 <= 0;
-                else
-                    q0 <= q0 + 1;
-            end
+            if (q0 == 9)
+                q0 <= 0;
+            else
+                q0 <= q0 + 1;
         end
     end
 endmodule
