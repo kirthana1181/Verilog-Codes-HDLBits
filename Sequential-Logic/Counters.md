@@ -222,7 +222,6 @@ module top_module(
     mod59 inst_mm1 (.clk(clk),.reset(reset),.ena(ena),.q1(mm[7:4]),.q0(mm[3:0]),.condn(enable[0])); 
     
     assign enable[1]= ((ss == 8'h59) & (mm == 8'h59)) ? 1'b1 : 1'b0;
-    //assign pm = reset ? 0 : ( ((ss == 8'h00) & (mm == 8'h00) & (hh == 8'h12)) ? ~pm : pm);
     always @(posedge clk) begin
         if (reset == 1'b1)
             pm <= 1'b0;
