@@ -38,15 +38,17 @@ module top_module(
     output reg [99:0] q); 
     
     always @(posedge clk) begin
-        q <= load ? data : q;
-        if (ena) begin
+        if (load)
+            q <= data;
+        else if (ena) begin
             case(ena)
                 2'b01: q <= {q[0],q[99:1]};
                 2'b10: q <= {q[98:0],q[99]};
                 default: q <= q;
             endcase
         end
+        else
+            q <= q;
     end
-
 endmodule
 ```  
