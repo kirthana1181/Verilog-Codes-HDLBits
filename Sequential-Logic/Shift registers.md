@@ -52,3 +52,33 @@ module top_module(
     end
 endmodule
 ```  
+
+# 3. Left/Right shift by 1 or 8
+
+```verilog
+module top_module(
+    input clk,
+    input load,
+    input ena,
+    input [1:0] amount,
+    input [63:0] data,
+    output reg [63:0] q); 
+    
+    always @(posedge clk) begin
+        if (load)
+            q <= data;
+        else if (ena) begin 
+            case(amount) 
+                2'b00: q <= {q[63],q[62:1]<<1};  //left
+                2'b01: q <= {q[63],q[62:1]<<8};//left8
+                2'b10: q <= {q[63],q[62:0]>>1};	 //right
+                2'b11: q <= {q[63],q[62:0]>>8};//right8
+            endcase
+        end
+        else
+            q <= q;
+    end
+    
+endmodule
+
+```
