@@ -18,9 +18,9 @@ module top_module(
                 q <= data;
             else
                 if (ena == 1'b1)
-                    q = q>>1;
+                    q <= q>>1;
                 else
-                    q = q;
+                    q <= q;
         end
     end
 
