@@ -82,3 +82,25 @@ module top_module(
     
 endmodule
 ```
+# 4. 5 bit LFSR
+
+```verilog
+module top_module(
+    input clk,
+    input reset,    // Active-high synchronous reset to 5'h1
+    output [4:0] q
+); 
+    //assign q[4] = 1'b0 ^ q[0];
+    //assign q[2] = q[3] ^ q[0];
+    always @(posedge clk) begin
+        if (reset) 
+            q <= 5'h1;
+        else begin
+            q[4] = 1'b0 ^ q[0];
+            q[2] = q[3] ^ q[0];
+            q <= q >> 1;
+        end
+    end
+
+endmodule
+```
