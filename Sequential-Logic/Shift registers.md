@@ -90,16 +90,45 @@ module top_module(
     input reset,    // Active-high synchronous reset to 5'h1
     output [4:0] q
 ); 
-    //assign q[4] = 1'b0 ^ q[0];
-    //assign q[2] = q[3] ^ q[0];
+    //wire a,b;
+    //assign a = 0 ^ q[0];
+    //assign b = q[3] ^ q[0];
     always @(posedge clk) begin
-        if (reset) 
+        //q[4] = 1'h0 ^ q[0];	//a
+        if (reset)
             q <= 5'h1;
         else begin
-            q[4] = 1'b0 ^ q[0];
-            q[2] = q[3] ^ q[0];
-            q <= q >> 1;
+            q[0] <= q[1];
+            q[1] <= q[2];
+            q[2] <= q[3] ^ q[0]; //b
+            q[3] <= q[4];
+            q[4] <= 1'h0 ^ q[0];
         end
+    end
+
+endmodule
+```
+# 4. 3 bit LFSR
+
+```verilog
+module top_module (
+	input [2:0] SW,      // R
+	input [1:0] KEY,     // L and clk
+	output [2:0] LEDR);  // Q
+
+    always @(posedge KEY[0]) begin
+        case(KEY[1])
+            1'b0 : begin
+                LEDR[2] <= LEDR[2] ^ LEDR[1];
+                LEDR[1] <= LEDR[0];
+                LEDR[0] <= LEDR[2];
+            end
+            1'b1: begin
+                LEDR[2] <= SW[2];
+                LEDR[1] <= SW[1];
+                LEDR[0] <= SW[0];
+            end
+        endcase
     end
 
 endmodule
