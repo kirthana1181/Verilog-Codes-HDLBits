@@ -133,3 +133,27 @@ module top_module (
 
 endmodule
 ```
+
+# 5. 32 bit LFSR
+
+```verilog
+module top_module(
+    input clk,
+    input reset,    // Active-high synchronous reset to 32'h1
+    output [31:0] q
+); 
+    always @(posedge clk) begin
+        if(reset)
+            q <= 32'h1;
+        else begin
+            q[0]  <= q[1] ^ q[0]; //pos1
+            q[1]  <= q[2] ^ q[0]; //pos2
+            q[19:2] <= q[20:3]; 
+            q[21] <= q[22] ^ q[0];//pos22
+            q[29:22] <= q[30:23];
+            q[31] <= 1'h0 ^ q[0]; //pos32  
+        end
+    end
+
+endmodule
+```
