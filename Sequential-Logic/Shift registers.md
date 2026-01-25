@@ -226,8 +226,7 @@ module top_module (
     
     reg [0:7]q = 0;
     always @(posedge clk) begin  //register 
-        q[0] <= S;
-        q[1:7] <= enable ? q[0:6] : q[1:7];
+        q <= enable ? {S,q[0:6]} : q;
     end
     
     always @(*) begin 	//mux
