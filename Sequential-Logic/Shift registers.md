@@ -157,3 +157,29 @@ module top_module(
 
 endmodule
 ```
+# 5. Shift register
+
+<img width="439" height="143" alt="image" src="https://github.com/user-attachments/assets/4dfa8b4b-cdf7-4c80-83e8-5a120394b9ab" />
+
+```verilog
+module top_module (
+    input clk,
+    input resetn,   // synchronous reset
+    input in,
+    output out);
+    	
+    reg [3:0]q = 4'h0;
+    always @(posedge clk) begin
+        q[3:1] = q[2:0];
+        if(~resetn) begin
+            q <= 4'h0;
+            out <= 0;
+        end
+        else begin
+            q[0] <= in;
+            out <= q[3];
+        end
+    end
+
+endmodule
+```
