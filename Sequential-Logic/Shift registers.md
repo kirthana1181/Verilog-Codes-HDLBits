@@ -183,3 +183,65 @@ module top_module (
 
 endmodule
 ```
+
+# 6. Shift register
+
+```verilog
+module top_module (
+    input [3:0] SW,
+    input [3:0] KEY,
+    output [3:0] LEDR
+); //clk, E and L are constant i.e KEY[0], KEY[1], KEY[2]
+    MUXDFF inst3 (.clk(KEY[0]),.w(KEY[3]), .R(SW[3]),.E(KEY[1]),.L(KEY[2]),.Q(LEDR[3]));
+    MUXDFF inst2 (.clk(KEY[0]),.w(LEDR[3]),.R(SW[2]),.E(KEY[1]),.L(KEY[2]),.Q(LEDR[2]));
+    MUXDFF inst1 (.clk(KEY[0]),.w(LEDR[2]),.R(SW[1]),.E(KEY[1]),.L(KEY[2]),.Q(LEDR[1]));
+    MUXDFF inst0 (.clk(KEY[0]),.w(LEDR[1]),.R(SW[0]),.E(KEY[1]),.L(KEY[2]),.Q(LEDR[0]));
+
+endmodule
+
+module MUXDFF (input clk,
+    input w, R, E, L,
+    output reg Q);
+    
+    always @(posedge clk) begin
+        case({L,E})
+            2'b00: Q <= Q;
+            2'b01: Q <= w;
+            2'b10: Q <= R;
+            2'b11: Q <= R;
+            default: Q <= 0;
+        endcase
+    end
+endmodule
+```
+# 7. 3-input LUT
+
+```verilog
+module top_module (
+    input clk,
+    input enable,
+    input S,
+    input A, B, C,
+    output Z); 
+    
+    reg [0:7]q = 0;
+    always @(posedge clk) begin  //register 
+        q[0] <= S;
+        q[1:7] <= enable ? q[0:6] : q[1:7];
+    end
+    
+    always @(*) begin 	//mux
+        case ({A,B,C})
+            3'h0: Z = q[0];
+            3'h1: Z = q[1];
+            3'h2: Z = q[2];
+            3'h3: Z = q[3];
+            3'h4: Z = q[4];
+            3'h5: Z = q[5];
+            3'h6: Z = q[6];
+            3'h7: Z = q[7];
+        endcase  
+    end
+    
+endmodule
+```
